@@ -42,6 +42,23 @@ def argilla_chat(
 
     return transform_fn
 
+def argilla_chat_gemma(
+    cfg,
+    **kwargs,
+):  # pylint: disable=possibly-unused-variable,unused-argument
+    """
+    for argilla/dpo-mix-7k conversations and gemma model
+    """
+
+    def transform_fn(sample):
+        sample[
+            "prompt"
+        ] = f"<bos><|im_start|>system\n<|im_end|><|im_start|>user\n{sample['chosen'][0]['content']}<|im_end|>\n<|im_start|>assistant\n"
+        sample["chosen"] = f"{sample['chosen'][1]['content']}<|im_end|>\n<eos>"
+        sample["rejected"] = f"{sample['rejected'][1]['content']}<|im_end|>\n<eos>"
+        return sample
+
+    return transform_fn
 
 def icr(
     cfg,
