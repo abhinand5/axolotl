@@ -53,7 +53,7 @@ def argilla_chat_gemma(
     def transform_fn(sample):
         sample[
             "prompt"
-        ] = f"<bos><|im_start|>system\n<|im_end|><|im_start|>user\n{sample['chosen'][0]['content']}<|im_end|>\n<|im_start|>assistant\n"
+        ] = f"<bos><|im_start|>system\n<|im_end|>\n<|im_start|>user\n{sample['chosen'][0]['content']}<|im_end|>\n<|im_start|>assistant\n"
         sample["chosen"] = f"{sample['chosen'][1]['content']}<|im_end|>\n<eos>"
         sample["rejected"] = f"{sample['rejected'][1]['content']}<|im_end|>\n<eos>"
         return sample
