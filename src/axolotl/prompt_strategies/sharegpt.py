@@ -35,6 +35,17 @@ def register_chatml_template(system_message=None):
         )
     )
 
+    register_conv_template(
+        Conversation(
+            name="chatml_gemma",
+            system_template="<bos><|im_start|>system\n{system_message}",
+            system_message=system_message,
+            roles=["<|im_start|>user", "<|im_start|>assistant"],
+            sep_style=SeparatorStyle.CHATML,
+            sep="<|im_end|>",
+        )
+    )
+
 
 def load(tokenizer, cfg, ds_cfg: Optional[Dict[str, Any]] = None):
     conversation = (
