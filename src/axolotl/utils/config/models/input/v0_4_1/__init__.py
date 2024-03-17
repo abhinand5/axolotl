@@ -951,6 +951,14 @@ class AxolotlInputConfig(
             raise ValueError("either datasets or pretraining_dataset is required")
         return data
 
+    @model_validator(mode="before")
+    @classmethod
+    def check_dataset_type_for_dpo(cls, data):
+        if data.get("rl") == "dpo" and data.get("datasets") is not None:
+            for dataset in data.get("datasets"):
+                if isinstance(dataset["type"], Dict):
+                    dataset["type"] = UserDefinedDPOType(**dataset["type"]) 
+        return data
 
 class AxolotlConfigWCapabilities(AxolotlInputConfig):
     """wrapper to valdiate gpu capabilities with the configured options"""

@@ -33,7 +33,12 @@ def default(cfg, dataset_idx=0, **kwargs):  # pylint: disable=unused-argument
                 system=sample[field_system], prompt=sample[field_prompt]
             )
         else:
-            sample["prompt"] = prompt_format.format(prompt=sample["prompt"])
+            if "{" + field_system + "}" in prompt_format:
+                sample["prompt"] = prompt_format.format(
+                    system="", prompt=sample[field_prompt]
+                )
+            else:
+                sample["prompt"] = prompt_format.format(prompt=sample[field_prompt])
         sample["chosen"] = chosen_format.format(chosen=sample[field_chosen])
         sample["rejected"] = rejected_format.format(rejected=sample[field_rejected])
         return sample
